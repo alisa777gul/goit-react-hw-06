@@ -1,20 +1,23 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useId } from 'react';
-import { ErrorMessage } from 'formik';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import style from './ContactForm.module.css';
 import { nanoid } from 'nanoid/non-secure';
+import { addContact } from '../../redux/contactsSlice';
 
-export default function ContactForm({ onAdd }) {
-  const handleSubmit = (values, actions) => {
-    console.log(values);
+export default function ContactForm() {
+  const dispatch = useDispatch();
 
-    onAdd({
-      name: values.name,
-      number: values.number,
-      id: nanoid(),
-    });
-    actions.resetForm();
+  const handleSubmit = (values, { resetForm }) => {
+    dispatch(
+      addContact({
+        id: nanoid(),
+        name: values.name,
+        number: values.number,
+      })
+    );
+    resetForm();
   };
 
   const FeedbackSchema = Yup.object().shape({
@@ -37,7 +40,7 @@ export default function ContactForm({ onAdd }) {
 
   return (
     <Formik
-      initialValues={{ name: '', number: '', id: '' }}
+      initialValues={{ name: '', number: '' }}
       onSubmit={handleSubmit}
       validationSchema={FeedbackSchema}
     >
@@ -65,7 +68,6 @@ export default function ContactForm({ onAdd }) {
             type="tel"
             name="number"
             id={numberFieldId}
-            pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}|[0-9]{3} [0-9]{2} [0-9]{2}"
             placeholder="999-99-99 or 999 99 99"
           />
           <ErrorMessage
