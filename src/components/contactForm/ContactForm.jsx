@@ -26,8 +26,8 @@ export default function ContactForm() {
       .max(50, 'Too Long!')
       .required('Required'),
     number: Yup.string()
-      .min(9, 'Too Short!') // 7 цифр + 1 дефис или пробелы
-      .max(10, 'Too Long!') // 7 цифр + 1 дефис или пробелы
+      .min(9, 'Too Short!')
+      .max(10, 'Too Long!')
       .required('Required')
       .matches(
         /^\d{3}-\d{2}-\d{2}$|^\d{3} \d{2} \d{2}$/,
